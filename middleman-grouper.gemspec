@@ -3,13 +3,13 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "middleman-grouper"
-  s.version     = "0.0.1"
+  s.version     = "0.2"
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Roger Parent"]
   # s.email       = ["email@example.com"]
   # s.homepage    = "http://example.com"
   s.summary     = "A middleman extension to group source pages."
-  s.description = "A middleman extension to group source pages."
+  s.description = "A middleman extension that allows for complex logic on directory-based groups of source pages."
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
