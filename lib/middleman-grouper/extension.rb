@@ -44,7 +44,8 @@ class MiddlemanGrouper < ::Middleman::Extension
 
   def group(name = nil)
     unless options.controller <= GroupController
-    raise "Grouper controllers must be or inherit from MiddlemanGrouper::GroupController!"
+      raise "Grouper controllers must be or inherit from MiddlemanGrouper::GroupController!"
+    end
     if !name && @resources.count == 1
       return options.controller.new(@resources.first[1])
     end
