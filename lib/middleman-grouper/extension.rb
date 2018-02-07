@@ -6,6 +6,8 @@ class MiddlemanGrouper < ::Middleman::Extension
   option :name, nil, "A unique string to indentify a group among multiple groups."
   option :scope, nil, "The folder relative to source that this group should pull resources from."
   option :callback, nil, "A function to be called on each resource after adding to the group."
+  option :controller, GroupController, "A class that inherits GroupController, allowing for "\
+                                       "any custom methods to be added to this group."
 
   def initialize(app, options_hash={}, &block)
     # Call super to build options from the options_hash
@@ -41,10 +43,12 @@ class MiddlemanGrouper < ::Middleman::Extension
   end
 
   def group(name = nil)
+    unless options.controller <= GroupController
+    raise "Grouper controllers must be or inherit from MiddlemanGrouper::GroupController!"
     if !name && @resources.count == 1
-      return GroupController.new(@resources.first[1])
+      return options.controller.new(@resources.first[1])
     end
-    return GroupController.new(@resources[name])
+    return options.controller.new(@resources[name])
   end
   expose_to_template :group
 
