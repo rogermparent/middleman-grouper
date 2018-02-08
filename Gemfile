@@ -13,6 +13,10 @@ end
 
 group :test do
   gem 'cucumber'
+  gem 'capybara'
   gem 'aruba'
   gem 'rspec'
+  gem 'opal'
+  gem 'opal-sprockets'
+  gem 'pandoc-ruby'
 end
