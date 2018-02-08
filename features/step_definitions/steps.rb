@@ -22,3 +22,7 @@ end
 Then("going to {string} should raise an exception") do |url|
   expect{ visit(URI.encode(url).to_s) }.to raise_exception RuntimeError
 end
+
+Then("running the server should raise an exception") do
+  expect{step "the Server is running"}.to raise_exception RuntimeError
+end

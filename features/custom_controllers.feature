@@ -58,7 +58,5 @@ Feature: Custom Controllers
       """
       <div class="group-class"><%= group(:first_group).class %></div>
       """
-    And the Server is running
-      
-    Then going to "/index.html" should raise an exception
-    
+
+    Then running the server should raise an exception

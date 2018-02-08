@@ -24,20 +24,18 @@ module MiddlemanGrouper
 
       # set up your extension
       raise "MiddlemanGrouper needs a scope!" unless options.scope
+      unless options.controller <= GroupController
+        raise "Grouper controllers must be or inherit from MiddlemanGrouper::GroupController!"
+      end
 
       @name = options.name ? options.name.to_sym : nil
       
       # Initialize @@resources and @@controllers if they don't exist
       @@resources ||= {}
-      @@controllers ||= {}
+      @@instances ||= {}
 
       # Initialize the given key
       @@resources[@name] = {}
-      @@controllers[@name] = options.controller
-    end
-
-    def scoped_resources
-      @@resources[@name]
     end
 
     def after_configuration
@@ -46,21 +44,13 @@ module MiddlemanGrouper
 
     # A Sitemap Manipulator
     def manipulate_resource_list(resources)
-      resources.each do |resource|
-        if resource.path.start_with? options.scope
-          scoped_key = resource.normalized_path[options.scope.length .. -1]
-          scoped_resources[scoped_key] = resource
-        end
-      end
+      scoped_resources = resources.select { |resource| resource.path.start_with? options.scope }
+      @@instances[@name] = options.controller.new(scoped_resources, options.scope)
       resources
     end
 
     def self.group(name = nil)
-      controller = @@controllers[name]
-      unless controller <= GroupController
-        raise "Grouper controllers must be or inherit from MiddlemanGrouper::GroupController!"
-      end
-      return controller.new(@@resources[name])
+      return @@instances[name]
     end
 
     def group(name = nil)
