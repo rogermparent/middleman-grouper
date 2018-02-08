@@ -19,4 +19,5 @@ group :test do
   gem 'opal'
   gem 'opal-sprockets'
   gem 'pandoc-ruby'
+  gem 'simplecov'
 end

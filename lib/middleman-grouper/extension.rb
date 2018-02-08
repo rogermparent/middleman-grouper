@@ -23,15 +23,17 @@ module MiddlemanGrouper
       # require 'necessary/library'
 
       # set up your extension
-      # puts options.my_option
       raise "MiddlemanGrouper needs a scope!" unless options.scope
-      
+
       @name = options.name ? options.name.to_sym : nil
-      # Initialize @@resources
+      
+      # Initialize @@resources and @@controllers if they don't exist
       @@resources ||= {}
+      @@controllers ||= {}
 
       # Initialize the given key
-      @@resources[@name] ||= {}
+      @@resources[@name] = {}
+      @@controllers[@name] = options.controller
     end
 
     def scoped_resources
@@ -53,14 +55,16 @@ module MiddlemanGrouper
       resources
     end
 
-    def group(name = nil)
-      unless options.controller <= GroupController
+    def self.group(name = nil)
+      controller = @@controllers[name]
+      unless controller <= GroupController
         raise "Grouper controllers must be or inherit from MiddlemanGrouper::GroupController!"
       end
-      if !name && @@resources.count == 1
-        return options.controller.new(@@resources.first[1])
-      end
-      return options.controller.new(@@resources[name])
+      return controller.new(@@resources[name])
+    end
+
+    def group(name = nil)
+      return self.class.group(name)
     end
     expose_to_template :group
 

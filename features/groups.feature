@@ -14,8 +14,9 @@ Feature: Groups
       """
     And a file named "./source/index.html.erb" with:
       """
-      ---
-      ---
+      <% group.all.each do |resource| %>
+        <div><%= resource.normalized_path %></div>
+      <% end %>
       <div class="source-files-count">
         <%= sitemap.resources.count %>
       </div>
@@ -23,6 +24,7 @@ Feature: Groups
       """
     And the Server is running
     And I go to "/index.html"
+    And I print the page body
       
     Then the element at CSS ".source-files-count" should contain "6"
     And the element at CSS ".group-count" should contain "3"
