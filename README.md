@@ -26,6 +26,39 @@ You've got two methods on this thing, not counting initialization.
 
 If you want to loop through all the resources, use `.all.each`
 
+### Extending the Group Controller
+This one's pretty fun- it allows you to tack on or override any methods you 
+see fit on the Group Controller!
+
+To make your own, just make a class that extends `MiddlemanGrouper::GroupController`! From there you can define any additional methods you'd like to have on the group, or even override the default ones!
+
+Here's a dumb example from the tests: Dog Controller
+
+```ruby
+class AuthorsController < ::MiddlemanGrouper::GroupController
+  def initialize(resources, scope)
+    super
+    @resources_by_id = {}
+    resources.each do |resource|
+      raise "Each author needs an id!" unless resource.data.id
+      key = resource.data.id
+      @resources_by_id[key] = resource
+    end
+  end
+
+  def find_by_id id
+    return(@resources_by_id[id])
+  end
+end
+
+activate :grouper,
+         name: :authors,
+         controller: AuthorsController,
+         scope: "authors/"
+```
+
+Now when you call `group(:authors)`, you have the `find_by_id` method to access a "cached" hash stored in the instance, on top of the regular `find` and `all`!
+
 ## Misc
 
 ### Features
