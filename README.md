@@ -6,12 +6,16 @@ Grouper is a plugin that aims to do what it says on the tin: group things.
 
 Specifically, it groups Middleman's [Sitemap Resources](http://www.rubydoc.info/github/middleman/middleman/Middleman/Sitemap/Resource) by the directory they reside in. This allows for source files to double as data files in a more convenient manner than raw Middleman allows.
 
-For a quick example, folder full of project pages in source/projects can be grouped like this.
+For a quick example, two folders containing two different types of pages in source/projects can be grouped like this.
 
 ```ruby
 activate :grouper,
          name: :projects,
          scope: "project/"
+
+activate :grouper,
+         name: :authors,
+         scope: "authors/"
 ```
 
 Now your project pages can be accessed in your templates with `group(:projects).all`! It's that simple- only if you want it to be, of course.
@@ -62,11 +66,6 @@ Now when you call `group(:authors)`, you have the `find_by_id` method to access 
 ## Misc
 
 ### Features
-
-Done, but need documentation
-
-- Multiple Groups
-- Custom Group Controllers
 
 Planned
 
